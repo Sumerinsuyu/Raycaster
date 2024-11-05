@@ -5,7 +5,7 @@
 ** Game.cpp
 */
 
-#include "../include/Game.h"
+#include "Game.hpp"
 
 Game::Game()
     : _window(sf::VideoMode(SCREEN_WIDTH, SCREEN_HEIGHT), "Doom")
@@ -23,10 +23,12 @@ void Game::events()
 
 void Game::display()
 {
-
+    _window.clear();
+    _map.render(_window);
+    _window.display();
 }
 
-void Game::update()
+void Game::update() const
 {
 
 }
@@ -35,6 +37,8 @@ void Game::loop()
 {
     while (_window.isOpen()) {
         events();
+        update();
+        display();
     }
 }
 

@@ -5,7 +5,7 @@
 ** main.cpp
 */
 
-#include "./include/Game.h"
+#include "Game.hpp"
 
 int main()
 {

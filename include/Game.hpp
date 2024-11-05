@@ -5,17 +5,20 @@
 ** Core.h
 */
 
-#ifndef GAME_H
-    #define GAME_H
+#ifndef GAME_HPP
+    #define GAME_HPP
 
     #include <iostream>
     #include <memory>
     #include <vector>
     #include <map>
+    #include <array>
     #include <SFML/Graphics.hpp>
 
-    #define SCREEN_WIDTH 800
-    #define SCREEN_HEIGHT 600
+    #include "Map.hpp"
+
+    #define SCREEN_WIDTH 1200
+    #define SCREEN_HEIGHT 800
 
 
 class Game {
@@ -24,14 +27,15 @@ class Game {
         void loop();
 
     private:
-        sf::Window _window;
+        Map _map;
+        sf::RenderWindow _window;
         sf::Event _event;
         sf::Clock _clock;
         Game();
         // ~Game();
 
         void events();
-        void update();
+        void update() const;
         void display();
 };
 

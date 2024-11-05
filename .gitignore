@@ -30,3 +30,11 @@
 *.exe
 *.out
 *.app
+
+# lint
+compile_commands.json
+
+#binary
+doom
+
+.vscode

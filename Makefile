@@ -8,7 +8,7 @@
 IDIR = ./include
 SRCDIR = src
 CC = g++
-CFLAGS += -g -I$(IDIR) -Wall -Wextra
+CFLAGS += -g -I$(IDIR) -Wall -Wextra -std=c++23
 LIBS += -lsfml-graphics -lsfml-window -lsfml-system
 
 COLOUR_GREEN=\033[0;32m
@@ -17,7 +17,9 @@ COLOUR_BLUE=\033[0;34m
 COLOUR_END=\033[0m
 
 SRC = 	main.cpp	\
-		$(SRCDIR)/Game.cpp
+		$(SRCDIR)/Game.cpp \
+		$(SRCDIR)/Map.cpp	\
+		$(SRCDIR)/Player.cpp
 
 OBJ = 	$(SRC:.cpp=.o)
 
@@ -54,7 +56,7 @@ $(NAME): $(OBJ)
 ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠉⠉⠉⠁⠀⠀⠀⠀⡏⠉⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀\n\
 ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⡇⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⡀⠀⠀⠀\n\
 ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣀⡠⡴⠖⠒⠉⠉⠉⠉⠁⠀⠀⠀⠀⠀⠀⠀⠀⠈⠉⠙⠲⣄$(COLOUR_END)"
-%.o: %.c
+%.o: %.cpp
 	$(call show_progress)
 	@$(CC) $(CFLAGS) -c -o $@ $< || (echo -e "$(COLOUR_RED)Compilation error on $<$(COLOUR_END)"; exit 1)
 
