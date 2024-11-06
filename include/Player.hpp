@@ -18,9 +18,20 @@
 class Player {
     public:
         Player();
+
+        void render(sf::RenderWindow &window);
     private:
-        std::pair<float, float> _pos;
+        sf::Vector2f _pos;
         float _direction;
         sf::CircleShape _skin;
         float _fov;
+
+        std::pair<float, float> getPos();
+        void setPos(std::pair<float, float>);
+        float getDirection();
+        void setDirection();
+        sf::CircleShape getSkin();
+        void setSkin(sf::CircleShape skin);
+        float getFov();
+        void setFov();
 };

@@ -15,4 +15,10 @@ Player::Player()
 {
     _skin.setOutlineColor(PLAYER_OUTLINE_COLOR);
     _skin.setFillColor(PLAYER_COLOR);
+    _skin.setPosition(_pos);
+}
+
+void Player::render(sf::RenderWindow &window)
+{
+    window.draw(_skin);
 }

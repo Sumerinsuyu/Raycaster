@@ -16,6 +16,7 @@
     #include <SFML/Graphics.hpp>
 
     #include "Map.hpp"
+    #include "Player.hpp"
 
     #define SCREEN_WIDTH 1200
     #define SCREEN_HEIGHT 800
@@ -28,6 +29,7 @@ class Game {
 
     private:
         Map _map;
+        Player _player;
         sf::RenderWindow _window;
         sf::Event _event;
         sf::Clock _clock;

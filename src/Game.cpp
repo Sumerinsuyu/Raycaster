@@ -25,6 +25,7 @@ void Game::display()
 {
     _window.clear();
     _map.render(_window);
+    _player.render(_window);
     _window.display();
 }
 
