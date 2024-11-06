@@ -69,7 +69,7 @@ void Map::drawTile(sf::RenderWindow &window, int x, int y, blockType type)
 {
     sf::Color color{};
 
-    _rectangle.setPosition({x, y});
+    _rectangle.setPosition({(float)x, (float)y});
     switch (type) {
         case EMPTY:
             color = sf::Color::Black;

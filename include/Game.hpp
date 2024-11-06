@@ -14,6 +14,7 @@
     #include <map>
     #include <array>
     #include <SFML/Graphics.hpp>
+    #include <math.h>
 
     #include "Map.hpp"
     #include "Player.hpp"

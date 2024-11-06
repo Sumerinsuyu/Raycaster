@@ -15,23 +15,37 @@
     #define PLAYER_OUTLINE_COLOR sf::Color::White
     #define DIRECTION_COLOR sf::Color::Green
 
+    enum direction_move {
+        UP,
+        DOWN,
+        LEFT,
+        RIGHT
+    };
+
 class Player {
     public:
         Player();
-
-        void render(sf::RenderWindow &window);
-    private:
-        sf::Vector2f _pos;
-        float _direction;
-        sf::CircleShape _skin;
-        float _fov;
-
-        std::pair<float, float> getPos();
-        void setPos(std::pair<float, float>);
+        sf::Vector2f getPos();
+        void setPos(sf::Vector2f pos);
         float getDirection();
         void setDirection();
         sf::CircleShape getSkin();
         void setSkin(sf::CircleShape skin);
         float getFov();
         void setFov();
+        sf::Vertex getDirectionVertex();
+        void setDirectionVectex();
+
+        void render(sf::RenderWindow &window);
+        void move(direction_move direction);
+        void rotate();
+
+    private:
+        sf::Vector2f _pos;
+        float _direction;
+        sf::CircleShape _skin;
+        float _fov;
+        sf::VertexArray _directionVertex;
+        float _speed;
+        float _camSpeed;
 };

@@ -16,8 +16,16 @@ Game::Game()
 void Game::events()
 {
     while(_window.pollEvent(_event)) {
-        if (_event.type == sf::Event::Closed)
-            _window.close();
+        switch (_event.type) {
+            case (sf::Event::Closed):
+                _window.close();
+                break;
+            case (sf::Event::KeyPressed):
+                _player.move(UP);
+                break;
+            default:
+                break;
+        }
     }
 }
 
