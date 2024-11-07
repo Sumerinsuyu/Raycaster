@@ -38,7 +38,6 @@ class Player {
 
         void render(sf::RenderWindow &window);
         void move(direction_move direction);
-        void rotate(bool isRight);
 
     private:
         sf::Vector2f _pos;
@@ -48,4 +47,7 @@ class Player {
         sf::VertexArray _directionVertex;
         float _speed;
         float _camSpeed;
+
+        void rotate(bool isRight);
+        void movePlayer();
 };

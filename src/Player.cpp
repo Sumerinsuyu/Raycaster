@@ -56,11 +56,27 @@ void Player::rotate(bool isRight)
     pos = _pos + playerRelativePos;
 }
 
+void Player::movePlayer()
+{
+    sf::Vector2f base = _directionVertex[0].position;
+    sf::Vector2f tip = _directionVertex[1].position;
+    sf::Vector2f dir = tip - base;
+    float absDir = sqrt(
+        pow(tip.x - base.x, 2.0f) + pow(tip.y - base.y, 2.0f)
+    );
+    sf::Vector2f new_point = base + dir / absDir * 50.0f;
+    _skin.setPosition(new_point);
+    _pos = new_point;
+    _directionVertex[0].position = new_point;
+    _directionVertex[1].position = tip;
+}
+
 void Player::move(direction_move direction)
 {
     switch (direction)
     {
         case UP:
+            movePlayer();
             break;
         case DOWN:
 

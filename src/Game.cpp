@@ -17,20 +17,20 @@ void Game::setKey(sf::Event event)
 {
     switch (event.key.code)
     {
-    case sf::Keyboard::W:
-        _player.move(UP);
-        break;
-    case sf::Keyboard::S:
-        _player.move(DOWN);
-        break;
-    case sf::Keyboard::A:
-        _player.move(LEFT);
-        break;
-    case sf::Keyboard::D:
-        _player.move(RIGHT);
-        break;
-    default:
-        break;
+        case sf::Keyboard::W:
+            _player.move(UP);
+            break;
+        case sf::Keyboard::S:
+            _player.move(DOWN);
+            break;
+        case sf::Keyboard::A:
+            _player.move(LEFT);
+            break;
+        case sf::Keyboard::D:
+            _player.move(RIGHT);
+            break;
+        default:
+            break;
     }
 }
 
@@ -60,7 +60,7 @@ void Game::display()
 
 void Game::update() const
 {
-
+    
 }
 
 void Game::loop()
