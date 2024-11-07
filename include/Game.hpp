@@ -42,7 +42,7 @@ class Game {
         void update() const;
         void display();
 
-        void setKey(sf::Event event);
+        void setKey();
 };
 
 #endif

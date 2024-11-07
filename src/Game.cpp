@@ -10,28 +10,19 @@
 Game::Game()
     : _window(sf::VideoMode(SCREEN_WIDTH, SCREEN_HEIGHT), "Doom")
 {
-
+    _window.setFramerateLimit(60);
 }
 
-void Game::setKey(sf::Event event)
+void Game::setKey()
 {
-    switch (event.key.code)
-    {
-        case sf::Keyboard::W:
-            _player.move(UP);
-            break;
-        case sf::Keyboard::S:
-            _player.move(DOWN);
-            break;
-        case sf::Keyboard::A:
-            _player.move(LEFT);
-            break;
-        case sf::Keyboard::D:
-            _player.move(RIGHT);
-            break;
-        default:
-            break;
-    }
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::W))
+        _player.move(UP);
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
+        _player.move(DOWN);
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
+        _player.move(LEFT);
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
+        _player.move(RIGHT);
 }
 
 void Game::events()
@@ -42,12 +33,12 @@ void Game::events()
                 _window.close();
                 break;
             case (sf::Event::KeyPressed):
-                setKey(_event);
                 break;
             default:
                 break;
         }
     }
+    setKey();
 }
 
 void Game::display()

@@ -49,5 +49,5 @@ class Player {
         float _camSpeed;
 
         void rotate(bool isRight);
-        void movePlayer();
+        void movePlayer(bool isUp);
 };
