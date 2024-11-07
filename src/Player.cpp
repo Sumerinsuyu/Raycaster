@@ -22,7 +22,7 @@ Player::Player()
     _skin.setFillColor(PLAYER_COLOR);
     _skin.setPosition(_pos);
     sf::Vertex player = _pos;
-    sf::Vertex direction = sf::Vertex({_pos.x, _direction});
+    sf::Vertex direction = sf::Vertex({_pos.x, 0.0f});
     _directionVertex[0] = player;
     _directionVertex[1] = direction;
 }
@@ -43,29 +43,17 @@ void Player::setPos(sf::Vector2f pos)
     _pos = pos;
 }
 
-void Player::rotate()
+void Player::rotate(bool isRight)
 {
     sf::Vector2f &pos = _directionVertex[1].position;
-    // std::vector<std::vector<float>> matrix =
-    // {
-    //     {cos(_camSpeed), -sin(_camSpeed)},
-    //     {sin(_camSpeed), cos(_camSpeed)}
-    // };
-    std::cout << _directionVertex[1].position.x << " " << _directionVertex[1].position.y << std::endl;
-    std::cout << pos.x << " " << pos.y << std::endl;
+    sf::Vector2f playerRelativePos = pos - _pos;
+    float direction = isRight ? _camSpeed : (-_camSpeed);
 
-    pos = {
-        pos.x * std::cos(_camSpeed) - pos.y * std::sin(_camSpeed),
-        pos.x * std::sin(_camSpeed) + pos.y * std::cos(_camSpeed)
+    playerRelativePos = {
+        playerRelativePos.x * std::cos(direction) - playerRelativePos.y * std::sin(direction),
+        playerRelativePos.x * std::sin(direction) + playerRelativePos.y * std::cos(direction)
     };
-
-    // pos = {
-    //     pos.x * matrix[0][0] + pos.y * matrix[0][1],
-    //     pos.x * matrix[1][0] + pos.y * matrix[1][1]
-    // };
-
-    std::cout << _directionVertex[1].position.x << " " << _directionVertex[1].position.y << std::endl;
-    std::cout << "BOUH" << std::endl;
+    pos = _pos + playerRelativePos;
 }
 
 void Player::move(direction_move direction)
@@ -73,16 +61,15 @@ void Player::move(direction_move direction)
     switch (direction)
     {
         case UP:
-            rotate();
             break;
         case DOWN:
 
             break;
         case LEFT:
-
+            rotate(false);
             break;
         case RIGHT:
-
+            rotate(true);
             break;
         default:
             break;

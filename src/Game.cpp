@@ -13,6 +13,27 @@ Game::Game()
 
 }
 
+void Game::setKey(sf::Event event)
+{
+    switch (event.key.code)
+    {
+    case sf::Keyboard::W:
+        _player.move(UP);
+        break;
+    case sf::Keyboard::S:
+        _player.move(DOWN);
+        break;
+    case sf::Keyboard::A:
+        _player.move(LEFT);
+        break;
+    case sf::Keyboard::D:
+        _player.move(RIGHT);
+        break;
+    default:
+        break;
+    }
+}
+
 void Game::events()
 {
     while(_window.pollEvent(_event)) {
@@ -21,7 +42,7 @@ void Game::events()
                 _window.close();
                 break;
             case (sf::Event::KeyPressed):
-                _player.move(UP);
+                setKey(_event);
                 break;
             default:
                 break;

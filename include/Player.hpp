@@ -38,7 +38,7 @@ class Player {
 
         void render(sf::RenderWindow &window);
         void move(direction_move direction);
-        void rotate();
+        void rotate(bool isRight);
 
     private:
         sf::Vector2f _pos;

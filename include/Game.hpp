@@ -34,12 +34,15 @@ class Game {
         sf::RenderWindow _window;
         sf::Event _event;
         sf::Clock _clock;
+
         Game();
         // ~Game();
 
         void events();
         void update() const;
         void display();
+
+        void setKey(sf::Event event);
 };
 
 #endif
