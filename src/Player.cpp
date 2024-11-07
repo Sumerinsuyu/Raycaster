@@ -64,11 +64,12 @@ void Player::movePlayer()
     float absDir = sqrt(
         pow(tip.x - base.x, 2.0f) + pow(tip.y - base.y, 2.0f)
     );
-    sf::Vector2f new_point = base + dir / absDir * 50.0f;
-    _skin.setPosition(new_point);
-    _pos = new_point;
-    _directionVertex[0].position = new_point;
-    _directionVertex[1].position = tip;
+    sf::Vector2f newPoint = base + dir / absDir * _speed;
+    sf::Vector2f newEndPoint = base + dir / absDir * (600.0f + _speed);
+    _skin.setPosition(newPoint);
+    _pos = newPoint;
+    _directionVertex[0].position = newPoint;
+    _directionVertex[1].position = newEndPoint;
 }
 
 void Player::move(direction_move direction)
