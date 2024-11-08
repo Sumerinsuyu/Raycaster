@@ -40,15 +40,17 @@ class Player {
         void move(direction_move direction);
 
     private:
-        sf::Vector2f _pos;
-        float _direction;
         sf::CircleShape _skin;
+        sf::Vector2f _pos;
+        sf::Vector2f _direction;
         float _fovAngle;
         sf::VertexArray _directionVertex;
         sf::VertexArray _fovVertex;          //declaring this make the player dissapear
         float _speed;
         float _camSpeed;
+        float _plane;
 
-        void rotate(bool isRight);
-        void movePlayer(bool isUp);
+        void rotate(bool isRight, sf::Vector2f &endPoint);
+        void movePlayer(bool isUp, sf::Vector2f &base, sf::Vector2f &endPoint);
+        void setPlayerFov();
 };
