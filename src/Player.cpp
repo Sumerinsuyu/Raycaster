@@ -12,8 +12,9 @@ Player::Player()
     : _pos{600.0f, 600.0f},
     _direction(0.0f),
     _skin(PLAYER_SIZE),
-    _fov(60.0f),
+    _fovAngle(60.0f),
     _directionVertex(sf::Lines, 2),
+    _fovVertex(sf::Lines, 4),
     _speed(3.0f),
     _camSpeed(2.0f * M_PI / 180.0f)
 {
@@ -22,7 +23,7 @@ Player::Player()
     _skin.setFillColor(PLAYER_COLOR);
     _skin.setPosition(_pos);
     sf::Vertex player = _pos;
-    sf::Vertex direction = sf::Vertex({_pos.x, 0.0f});
+    sf::Vertex direction = sf::Vertex({_pos.x, 200.0f});
     _directionVertex[0] = player;
     _directionVertex[1] = direction;
 }
@@ -50,10 +51,8 @@ void Player::rotate(bool isRight)
     float direction = isRight ? _camSpeed : (-_camSpeed);
 
     playerRelativePos = {
-        playerRelativePos.x * std::cos(direction) -
-        playerRelativePos.y * std::sin(direction),
-        playerRelativePos.x * std::sin(direction) +
-        playerRelativePos.y * std::cos(direction)
+        playerRelativePos.x * std::cos(direction) - playerRelativePos.y * std::sin(direction),
+        playerRelativePos.x * std::sin(direction) + playerRelativePos.y * std::cos(direction)
     };
     pos = _pos + playerRelativePos;
 }
@@ -68,7 +67,7 @@ void Player::movePlayer(bool isUp)
         pow(tip.x - base.x, 2.0f) + pow(tip.y - base.y, 2.0f)
     );
     sf::Vector2f newPoint = base + dir / absDir * tempSpeed;
-    sf::Vector2f newEndPoint = base + dir / absDir * (600.0f + tempSpeed);
+    sf::Vector2f newEndPoint = base + dir / absDir * (400.0f + tempSpeed);
 
     _skin.setPosition(newPoint);
     _pos = newPoint;

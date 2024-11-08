@@ -51,7 +51,7 @@ void Game::display()
 
 void Game::update() const
 {
-    
+
 }
 
 void Game::loop()

@@ -43,8 +43,9 @@ class Player {
         sf::Vector2f _pos;
         float _direction;
         sf::CircleShape _skin;
-        float _fov;
+        float _fovAngle;
         sf::VertexArray _directionVertex;
+        sf::VertexArray _fovVertex;          //declaring this make the player dissapear
         float _speed;
         float _camSpeed;
 
