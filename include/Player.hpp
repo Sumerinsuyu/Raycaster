@@ -25,19 +25,10 @@
 class Player {
     public:
         Player();
-        sf::Vector2f getPos();
-        void setPos(sf::Vector2f pos);
-        float getDirection();
-        void setDirection();
-        sf::CircleShape getSkin();
-        void setSkin(sf::CircleShape skin);
-        float getFov();
-        void setFov();
-        sf::Vertex getDirectionVertex();
-        void setDirectionVectex();
 
-        void render(sf::RenderWindow &window);
+        void render(sf::RenderWindow &window) const;
         void move(direction_move direction);
+        void update();
 
     private:
         sf::CircleShape _skin;
@@ -45,12 +36,11 @@ class Player {
         sf::Vector2f _direction;
         float _fovAngle;
         sf::VertexArray _directionVertex;
-        sf::VertexArray _fovVertex;          //declaring this make the player dissapear
+        sf::VertexArray _fovVertex;
         float _speed;
         float _camSpeed;
-        float _plane;
 
-        void rotate(bool isRight, sf::Vector2f &endPoint);
-        void movePlayer(bool isUp, sf::Vector2f &base, sf::Vector2f &endPoint);
+        void rotate(bool isRight, sf::Vector2f &endPoint) const;
+        void movePlayer(bool isUp, sf::Vector2f &base, sf::Vector2f &endPoint) const;
         void setPlayerFov();
 };

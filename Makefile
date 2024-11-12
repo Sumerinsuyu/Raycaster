@@ -8,7 +8,7 @@
 IDIR = ./include
 SRCDIR = src
 CC = g++
-CFLAGS += -g -I$(IDIR) -Wall -Wextra -std=c++23 -O3 -flto
+CFLAGS += -g -I$(IDIR) -Wall -Wextra -std=c++23 -O3
 LIBS += -lsfml-graphics -lsfml-window -lsfml-system
 
 COLOUR_GREEN=\033[0;32m

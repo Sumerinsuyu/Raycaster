@@ -24,7 +24,7 @@ Player::Player()
     _skin.setPosition(_pos);
 
     sf::Vertex player = _pos;
-    sf::Vertex direction = sf::Vertex({_pos.x, 200.0f});
+    sf::Vertex direction({_pos.x, 200.0f});
     _directionVertex[0] = player;
     _directionVertex[1] = direction;
 
@@ -32,62 +32,11 @@ Player::Player()
     setPlayerFov();
 }
 
-void Player::render(sf::RenderWindow &window)
+void Player::render(sf::RenderWindow &window) const
 {
     window.draw(_skin);
     window.draw(_directionVertex);
     window.draw(_fovVertex);
-}
-
-sf::Vector2f Player::getPos()
-{
-    return _pos;
-}
-
-void Player::setPos(sf::Vector2f pos)
-{
-    _pos = pos;
-}
-
-void Player::rotate(bool isRight, sf::Vector2f &endPoint)
-{
-    sf::Vector2f &pos = endPoint;
-    sf::Vector2f playerRelativePos = pos - _pos;
-    float direction = isRight ? _camSpeed : (-_camSpeed);
-
-    playerRelativePos = {
-        playerRelativePos.x * std::cos(direction) - playerRelativePos.y * std::sin(direction),
-        playerRelativePos.x * std::sin(direction) + playerRelativePos.y * std::cos(direction)
-    };
-    pos = _pos + playerRelativePos;
-}
-
-void Player::movePlayer(bool isUp, sf::Vector2f &basePoint, sf::Vector2f &endPoint)
-{
-    sf::Vector2f base = basePoint;
-    sf::Vector2f tip = endPoint;
-    sf::Vector2f dir = tip - base;
-    float tempSpeed = isUp ? _speed : -_speed;
-    float absDir = sqrt(
-        pow(tip.x - base.x, 2.0f) + pow(tip.y - base.y, 2.0f)
-    );
-    sf::Vector2f newPoint = base + dir / absDir * tempSpeed;
-    sf::Vector2f newEndPoint = base + dir / absDir * (400.0f + tempSpeed);
-
-    basePoint = newPoint;
-    endPoint = newEndPoint;
-}
-
-void Player::setPlayerFov()
-{
-    float planeLength = tan(_fovAngle / 2.0f);
-    sf::Vector2f plane(-_direction.y * planeLength, _direction.x * planeLength);
-
-    _fovVertex[1] = _pos + _direction - plane;
-    _fovVertex[3] = _pos + _direction + plane;
-
-    _fovVertex[0].position = _pos;
-    _fovVertex[2].position = _pos;
 }
 
 void Player::move(direction_move direction)
@@ -115,10 +64,53 @@ void Player::move(direction_move direction)
         default:
             break;
     }
+}
 
-    // TODO: create update function
+void Player::update()
+{
     _skin.setPosition(_directionVertex[0].position);
     _pos = _directionVertex[0].position;
 
     _direction = _directionVertex[1].position - _directionVertex[0].position;
+}
+
+void Player::rotate(bool isRight, sf::Vector2f &endPoint) const
+{
+    sf::Vector2f &pos = endPoint;
+    sf::Vector2f playerRelativePos = pos - _pos;
+    float direction = isRight ? _camSpeed : (-_camSpeed);
+
+    playerRelativePos = {
+        playerRelativePos.x * std::cos(direction) - playerRelativePos.y * std::sin(direction),
+        playerRelativePos.x * std::sin(direction) + playerRelativePos.y * std::cos(direction)
+    };
+    pos = _pos + playerRelativePos;
+}
+
+void Player::movePlayer(bool isUp, sf::Vector2f &basePoint, sf::Vector2f &endPoint) const
+{
+    sf::Vector2f base = basePoint;
+    sf::Vector2f tip = endPoint;
+    sf::Vector2f dir = tip - base;
+    float tempSpeed = isUp ? _speed : -_speed;
+    float absDir = sqrt(
+        pow(tip.x - base.x, 2.0f) + pow(tip.y - base.y, 2.0f)
+    );
+    sf::Vector2f newPoint = base + dir / absDir * tempSpeed;
+    sf::Vector2f newEndPoint = base + dir / absDir * (400.0f + tempSpeed);
+
+    basePoint = newPoint;
+    endPoint = newEndPoint;
+}
+
+void Player::setPlayerFov()
+{
+    float planeLength = tan(_fovAngle / 2.0f);
+    sf::Vector2f plane(-_direction.y * planeLength, _direction.x * planeLength);
+
+    _fovVertex[1] = _pos + _direction - plane;
+    _fovVertex[3] = _pos + _direction + plane;
+
+    _fovVertex[0].position = _pos;
+    _fovVertex[2].position = _pos;
 }

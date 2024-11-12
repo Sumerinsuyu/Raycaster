@@ -29,10 +29,10 @@ void Game::events()
 {
     while(_window.pollEvent(_event)) {
         switch (_event.type) {
-            case (sf::Event::Closed):
+            case sf::Event::Closed:
                 _window.close();
                 break;
-            case (sf::Event::KeyPressed):
+            case sf::Event::KeyPressed:
                 break;
             default:
                 break;
@@ -49,9 +49,9 @@ void Game::display()
     _window.display();
 }
 
-void Game::update() const
+void Game::update()
 {
-
+    _player.update();
 }
 
 void Game::loop()

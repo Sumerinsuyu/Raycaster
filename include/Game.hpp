@@ -39,7 +39,7 @@ class Game {
         // ~Game();
 
         void events();
-        void update() const;
+        void update();
         void display();
 
         void setKey();
