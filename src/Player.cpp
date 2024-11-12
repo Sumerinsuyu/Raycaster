@@ -16,7 +16,8 @@ Player::Player()
     _directionVertex(sf::Lines, 2),
     _fovVertex(sf::Lines, 4),
     _speed(3.0f),
-    _camSpeed(2.0f * (M_PI / 180.0f))
+    _camSpeed(2.0f * (M_PI / 180.0f)),
+    _beamArray()
 {
     _skin.setOrigin({PLAYER_SIZE, PLAYER_SIZE});
     _skin.setOutlineColor(PLAYER_OUTLINE_COLOR);
@@ -37,6 +38,8 @@ void Player::render(sf::RenderWindow &window) const
     window.draw(_skin);
     window.draw(_directionVertex);
     window.draw(_fovVertex);
+    for (auto &beam: _beamArray)
+        window.draw(beam);
 }
 
 void Player::move(direction_move direction)
@@ -46,20 +49,24 @@ void Player::move(direction_move direction)
         case UP:
             movePlayer(true, _directionVertex[0].position, _directionVertex[1].position);
             setPlayerFov();
+            sendBeam();
             break;
         case DOWN:
             movePlayer(false, _directionVertex[0].position, _directionVertex[1].position);
             setPlayerFov();
+            sendBeam();
             break;
         case LEFT:
             rotate(false, _directionVertex[1].position);
             rotate(false, _fovVertex[1].position);
             rotate(false, _fovVertex[3].position);
+            sendBeam();
             break;
         case RIGHT:
             rotate(true, _directionVertex[1].position);
             rotate(true, _fovVertex[1].position);
             rotate(true, _fovVertex[3].position);
+            sendBeam();
             break;
         default:
             break;
@@ -113,4 +120,29 @@ void Player::setPlayerFov()
 
     _fovVertex[0].position = _pos;
     _fovVertex[2].position = _pos;
+}
+
+sf::VertexArray Player::createBeam(float angle) const
+{
+    float planeLength = tan(angle / 2.0f);
+    sf::Vector2f plane(-_direction.y * planeLength, _direction.x * planeLength);
+    sf::VertexArray beam(sf::Lines, 4);
+
+    beam[1] = _pos + _direction - plane;
+    beam[3] = _pos + _direction + plane;
+
+    beam[0].position = _pos;
+    beam[2].position = _pos;
+    return beam;
+}
+
+void Player::sendBeam()
+{
+    float beamAngle = _fovAngle;
+
+    _beamArray.clear();
+    for (int i = 0; i < BEAM_NUMBER; i ++) {
+        _beamArray.push_back(createBeam(beamAngle));
+        beamAngle -= (_fovAngle / BEAM_NUMBER);
+    }
 }

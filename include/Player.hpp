@@ -14,6 +14,7 @@
     #define PLAYER_COLOR sf::Color::Red
     #define PLAYER_OUTLINE_COLOR sf::Color::White
     #define DIRECTION_COLOR sf::Color::Green
+    #define BEAM_NUMBER 4
 
     enum direction_move {
         UP,
@@ -39,8 +40,11 @@ class Player {
         sf::VertexArray _fovVertex;
         float _speed;
         float _camSpeed;
+        std::vector<sf::VertexArray> _beamArray;
 
         void rotate(bool isRight, sf::Vector2f &endPoint) const;
         void movePlayer(bool isUp, sf::Vector2f &base, sf::Vector2f &endPoint) const;
         void setPlayerFov();
+        sf::VertexArray createBeam(float angle) const;
+        void sendBeam();
 };
