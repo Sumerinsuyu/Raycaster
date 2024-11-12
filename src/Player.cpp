@@ -31,6 +31,7 @@ Player::Player()
 
     _direction = _directionVertex[1].position - _directionVertex[0].position;
     setPlayerFov();
+    sendBeam();
 }
 
 void Player::render(sf::RenderWindow &window) const
@@ -49,24 +50,20 @@ void Player::move(direction_move direction)
         case UP:
             movePlayer(true, _directionVertex[0].position, _directionVertex[1].position);
             setPlayerFov();
-            sendBeam();
             break;
         case DOWN:
             movePlayer(false, _directionVertex[0].position, _directionVertex[1].position);
             setPlayerFov();
-            sendBeam();
             break;
         case LEFT:
             rotate(false, _directionVertex[1].position);
             rotate(false, _fovVertex[1].position);
             rotate(false, _fovVertex[3].position);
-            sendBeam();
             break;
         case RIGHT:
             rotate(true, _directionVertex[1].position);
             rotate(true, _fovVertex[1].position);
             rotate(true, _fovVertex[3].position);
-            sendBeam();
             break;
         default:
             break;
@@ -77,8 +74,9 @@ void Player::update()
 {
     _skin.setPosition(_directionVertex[0].position);
     _pos = _directionVertex[0].position;
-
     _direction = _directionVertex[1].position - _directionVertex[0].position;
+    sendBeam();
+    checkBeamImpact();
 }
 
 void Player::rotate(bool isRight, sf::Vector2f &endPoint) const
@@ -120,6 +118,13 @@ void Player::setPlayerFov()
 
     _fovVertex[0].position = _pos;
     _fovVertex[2].position = _pos;
+
+    _fovVertex[0].color = sf::Color::Red;
+    _fovVertex[1].color = sf::Color::Red;
+
+    _fovVertex[2].color = sf::Color::Green;
+    _fovVertex[3].color = sf::Color::Green;
+
 }
 
 sf::VertexArray Player::createBeam(float angle) const
@@ -133,6 +138,13 @@ sf::VertexArray Player::createBeam(float angle) const
 
     beam[0].position = _pos;
     beam[2].position = _pos;
+
+    beam[0].color = sf::Color::Yellow;
+    beam[1].color = sf::Color::Yellow;
+
+    beam[2].color = sf::Color::Yellow;
+    beam[3].color = sf::Color::Yellow;
+
     return beam;
 }
 
@@ -141,8 +153,42 @@ void Player::sendBeam()
     float beamAngle = _fovAngle;
 
     _beamArray.clear();
-    for (int i = 0; i < BEAM_NUMBER; i ++) {
+    for (int i = 0; i < BEAM_NUMBER; i++) {
         _beamArray.push_back(createBeam(beamAngle));
         beamAngle -= (_fovAngle / BEAM_NUMBER);
     }
 }
+
+sf::Vector2f getNewPoint(sf::VertexArray &currentCheck)
+{
+    sf::Vector2f base = currentCheck[0].position;
+    sf::Vector2f tip = currentCheck[1].position;
+    sf::Vector2f dir = tip - base;
+    float absDir = sqrt(
+        pow(tip.x - base.x, 2.0f) + pow(tip.y - base.y, 2.0f)
+    );
+    sf::Vector2f newPoint = base + dir / absDir * CHECK_LENGTH;
+
+    return newPoint;
+}
+
+void updateBeam(sf::VertexArray &beam)
+{
+    sf::Vector2f checkPoint = beam[0].position;
+    sf::VertexArray checkArray(sf::Lines, 2);
+
+    checkArray[1].position = beam[1].position;
+    for (int i = 0; i < 200; i++) {
+        checkArray[0].position = checkPoint;
+        checkPoint = getNewPoint(checkArray);
+        std::cout <<  checkPoint.x << "," << checkPoint.y << std::endl;
+    }
+}
+
+void Player::checkBeamImpact()
+{
+    for (auto &beam: _beamArray) {
+        updateBeam(beam);
+    }
+}
+

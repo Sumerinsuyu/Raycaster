@@ -14,7 +14,10 @@
     #define PLAYER_COLOR sf::Color::Red
     #define PLAYER_OUTLINE_COLOR sf::Color::White
     #define DIRECTION_COLOR sf::Color::Green
-    #define BEAM_NUMBER 4
+
+    #define BEAM_NUMBER 8
+
+    #define CHECK_LENGTH 10.0f
 
     enum direction_move {
         UP,
@@ -47,4 +50,5 @@ class Player {
         void setPlayerFov();
         sf::VertexArray createBeam(float angle) const;
         void sendBeam();
+        void checkBeamImpact();
 };
