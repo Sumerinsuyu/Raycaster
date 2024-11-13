@@ -34,11 +34,8 @@ class Player {
         void move(direction_move direction);
         void update();
 
-        void setCheckerPos(sf::Vector2f pos);
-
     private:
         sf::CircleShape _skin;
-        sf::CircleShape _checker;
         sf::Vector2f _pos;
         sf::Vector2f _direction;
         float _fovAngle;

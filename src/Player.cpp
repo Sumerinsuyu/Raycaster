@@ -11,7 +11,6 @@
 
 Player::Player()
     : _skin(PLAYER_SIZE),
-    _checker(2.0f),
     _pos{600.0f, 600.0f},
     _direction{},
     _fovAngle(60.0 * (M_PI / 180.0f)),
@@ -25,11 +24,6 @@ Player::Player()
     _skin.setOutlineColor(PLAYER_OUTLINE_COLOR);
     _skin.setFillColor(PLAYER_COLOR);
     _skin.setPosition(_pos);
-
-    _checker.setRadius(2.0f);
-    _checker.setOrigin({2.0f, 2.0f});
-    _checker.setOutlineColor(PLAYER_OUTLINE_COLOR);
-    _checker.setFillColor(PLAYER_COLOR);
 
     sf::Vertex player = _pos;
     sf::Vertex direction({_pos.x, -600.0f});
@@ -213,9 +207,4 @@ void Player::checkBeamImpact()
         updateBeam(beam, 0, 1);
         updateBeam(beam, 2, 3);
     }
-}
-
-void Player::setCheckerPos(sf::Vector2f pos)
-{
-    _checker.setPosition(pos);
 }
