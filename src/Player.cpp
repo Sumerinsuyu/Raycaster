@@ -7,6 +7,7 @@
 
 #include "Player.hpp"
 #include <cmath>
+#include "Map.hpp"
 
 Player::Player()
     : _skin(PLAYER_SIZE),
@@ -149,8 +150,8 @@ sf::VertexArray Player::createBeam(float angle) const
     beam[0].color = sf::Color::Yellow;
     beam[1].color = sf::Color::Yellow;
 
-    beam[2].color = sf::Color::Yellow;
-    beam[3].color = sf::Color::Yellow;
+    beam[2].color = sf::Color::Magenta;
+    beam[3].color = sf::Color::Magenta;
 
     return beam;
 }
@@ -179,21 +180,25 @@ sf::Vector2f getNewPoint(sf::VertexArray &currentCheck)
     return newPoint;
 }
 
-sf::Vector2f updateBeam(sf::VertexArray &beam)
+bool updateBeam(sf::VertexArray &beam, int firstPos, int secondPos)
 {
-    sf::Vector2f checkPoint = beam[0].position;
+    sf::Vector2f checkPoint = beam[firstPos].position;
     sf::VertexArray checkArray(sf::Lines, 2);
     sf::Vector2i testPoint;
+    auto map = Map();
 
-    checkArray[1].position = beam[1].position;
+    checkArray[1].position = beam[secondPos].position;
     for (int i = 0; i < 200; i++) {
         checkArray[0].position = checkPoint;
         checkPoint = getNewPoint(checkArray);
         testPoint = {(int)(checkPoint.x * (24.0f / 1200.0f)),
             (int)(checkPoint.y * (24.0f / 800.0f))};
-        std::cout << testPoint.x << "," << testPoint.y << std::endl;
+        if (map.getMap()[testPoint.y][testPoint.x] != EMPTY) {
+            beam[secondPos].position = checkPoint;
+            return true;
+        }
     }
-    return checkPoint;
+    return false;
 }
 
 void Player::checkBeamImpact()
@@ -201,9 +206,9 @@ void Player::checkBeamImpact()
     sf::Vector2f pos;
 
     for (auto &beam: _beamArray) {
-        pos = updateBeam(beam);
+        updateBeam(beam, 0, 1);
+        updateBeam(beam, 2, 3);
     }
-    _checker.setPosition(pos);
 }
 
 void Player::setCheckerPos(sf::Vector2f pos)

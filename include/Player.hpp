@@ -17,7 +17,7 @@
 
     #define BEAM_NUMBER 8
 
-    #define CHECK_LENGTH 10.0f
+    #define CHECK_LENGTH 2.0f
 
     enum direction_move {
         UP,
