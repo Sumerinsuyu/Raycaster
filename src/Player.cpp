@@ -10,6 +10,7 @@
 
 Player::Player()
     : _skin(PLAYER_SIZE),
+    _checker(2.0f),
     _pos{600.0f, 600.0f},
     _direction{},
     _fovAngle(60.0 * (M_PI / 180.0f)),
@@ -23,6 +24,11 @@ Player::Player()
     _skin.setOutlineColor(PLAYER_OUTLINE_COLOR);
     _skin.setFillColor(PLAYER_COLOR);
     _skin.setPosition(_pos);
+
+    _checker.setRadius(2.0f);
+    _checker.setOrigin({2.0f, 2.0f});
+    _checker.setOutlineColor(PLAYER_OUTLINE_COLOR);
+    _checker.setFillColor(PLAYER_COLOR);
 
     sf::Vertex player = _pos;
     sf::Vertex direction({_pos.x, 200.0f});
@@ -41,6 +47,7 @@ void Player::render(sf::RenderWindow &window) const
     window.draw(_fovVertex);
     for (auto &beam: _beamArray)
         window.draw(beam);
+    window.draw(_checker);
 }
 
 void Player::move(direction_move direction)
@@ -172,23 +179,34 @@ sf::Vector2f getNewPoint(sf::VertexArray &currentCheck)
     return newPoint;
 }
 
-void updateBeam(sf::VertexArray &beam)
+sf::Vector2f updateBeam(sf::VertexArray &beam)
 {
     sf::Vector2f checkPoint = beam[0].position;
     sf::VertexArray checkArray(sf::Lines, 2);
+    sf::Vector2i testPoint;
 
     checkArray[1].position = beam[1].position;
     for (int i = 0; i < 200; i++) {
         checkArray[0].position = checkPoint;
         checkPoint = getNewPoint(checkArray);
-        std::cout <<  checkPoint.x << "," << checkPoint.y << std::endl;
+        testPoint = {(int)(checkPoint.x * (24.0f / 1200.0f)),
+            (int)(checkPoint.y * (24.0f / 800.0f))};
+        std::cout << testPoint.x << "," << testPoint.y << std::endl;
     }
+    return checkPoint;
 }
 
 void Player::checkBeamImpact()
 {
+    sf::Vector2f pos;
+
     for (auto &beam: _beamArray) {
-        updateBeam(beam);
+        pos = updateBeam(beam);
     }
+    _checker.setPosition(pos);
 }
 
+void Player::setCheckerPos(sf::Vector2f pos)
+{
+    _checker.setPosition(pos);
+}
