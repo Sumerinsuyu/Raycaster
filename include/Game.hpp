@@ -29,7 +29,6 @@ class Game {
         void loop();
 
     private:
-        Map _map;
         Player _player;
         sf::RenderWindow _window;
         sf::Event _event;

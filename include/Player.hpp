@@ -15,9 +15,9 @@
     #define PLAYER_OUTLINE_COLOR sf::Color::White
     #define DIRECTION_COLOR sf::Color::Green
 
-    #define BEAM_NUMBER 8
+    #define BEAM_NUMBER 128
 
-    #define CHECK_LENGTH 2.0f
+    #define CHECK_LENGTH 1.0f
 
     enum direction_move {
         UP,

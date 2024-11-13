@@ -32,7 +32,7 @@ Player::Player()
     _checker.setFillColor(PLAYER_COLOR);
 
     sf::Vertex player = _pos;
-    sf::Vertex direction({_pos.x, 200.0f});
+    sf::Vertex direction({_pos.x, -600.0f});
     _directionVertex[0] = player;
     _directionVertex[1] = direction;
 
@@ -48,7 +48,6 @@ void Player::render(sf::RenderWindow &window) const
     window.draw(_fovVertex);
     for (auto &beam: _beamArray)
         window.draw(beam);
-    window.draw(_checker);
 }
 
 void Player::move(direction_move direction)
@@ -110,7 +109,7 @@ void Player::movePlayer(bool isUp, sf::Vector2f &basePoint, sf::Vector2f &endPoi
         pow(tip.x - base.x, 2.0f) + pow(tip.y - base.y, 2.0f)
     );
     sf::Vector2f newPoint = base + dir / absDir * tempSpeed;
-    sf::Vector2f newEndPoint = base + dir / absDir * (400.0f + tempSpeed);
+    sf::Vector2f newEndPoint = base + dir / absDir * (1200.0f + tempSpeed);
 
     basePoint = newPoint;
     endPoint = newEndPoint;
@@ -185,16 +184,18 @@ bool updateBeam(sf::VertexArray &beam, int firstPos, int secondPos)
     sf::Vector2f checkPoint = beam[firstPos].position;
     sf::VertexArray checkArray(sf::Lines, 2);
     sf::Vector2i testPoint;
-    auto map = Map();
+    auto &map = Map::getInstance();
 
     checkArray[1].position = beam[secondPos].position;
-    for (int i = 0; i < 200; i++) {
+    for (int i = 0; i < 1200 / CHECK_LENGTH; i++) {
         checkArray[0].position = checkPoint;
         checkPoint = getNewPoint(checkArray);
         testPoint = {(int)(checkPoint.x * (24.0f / 1200.0f)),
             (int)(checkPoint.y * (24.0f / 800.0f))};
-        if (map.getMap()[testPoint.y][testPoint.x] != EMPTY) {
+        if (testPoint.y <= 24 && testPoint.x <= 24 &&
+                map.getMap()[testPoint.y][testPoint.x].type != EMPTY) {
             beam[secondPos].position = checkPoint;
+            Map::getInstance().getMap()[testPoint.y][testPoint.x].isHit = true;
             return true;
         }
     }

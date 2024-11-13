@@ -26,21 +26,32 @@
         RED_WALL,
         YELLOW_WALL
     };
+
+    struct Block {
+        blockType type;
+        bool isHit = false;
+
+        explicit Block(blockType bType): type(bType)
+        {}
+    };
+
     // * Typedef map
-    using worldLine = std::array<blockType, MAP_WIDTH>;
+    using worldLine = std::array<Block, MAP_WIDTH>;
     using world = std::array<worldLine, MAP_HEIGHT>;
 
 class Map {
     public:
-        Map();
+        static Map &getInstance();
         world &getMap();
         // TODO: void setMap();
         void render(sf::RenderWindow &window);
 
     private:
+        Map();
         world _worldMap;
         sf::RectangleShape _rectangle;
         void drawTile(sf::RenderWindow &window, int x, int y, blockType type);
+        void resetMap();
 };
 
 #endif

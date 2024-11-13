@@ -44,7 +44,7 @@ void Game::events()
 void Game::display()
 {
     _window.clear();
-    _map.render(_window);
+    Map::getInstance().render(_window);
     _player.render(_window);
     _window.display();
 }
