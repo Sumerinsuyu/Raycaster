@@ -111,6 +111,9 @@ void Player::movePlayer(bool isUp, sf::Vector2f &basePoint, sf::Vector2f &endPoi
     sf::Vector2f newPoint = base + dir / absDir * tempSpeed;
     sf::Vector2f newEndPoint = base + dir / absDir * (1200.0f + tempSpeed);
 
+    if (Map::getInstance().getMap()[(int)(newPoint.y * (24.0f / 800.0f))]
+        [(int)(newPoint.x * (24.0f / 1200.0f))].type != EMPTY)
+        return;
     basePoint = newPoint;
     endPoint = newEndPoint;
 }
