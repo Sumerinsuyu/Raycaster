@@ -16,8 +16,10 @@
     #define DIRECTION_COLOR sf::Color::Green
 
     #define BEAM_NUMBER 128
-
     #define CHECK_LENGTH 1.0f
+
+    #define TOTAL_BEAMS BEAM_NUMBER * 2
+    #define STRIPS_WIDTH 1200.0f / TOTAL_BEAMS
 
     enum direction_move {
         UP,
@@ -30,11 +32,17 @@ class Player {
     public:
         Player();
 
+        // * Up view
         void render(sf::RenderWindow &window) const;
         void move(direction_move direction);
         void update();
 
+        // *Player Pov
+        void PlayerRender();
+        void PlayerUpdate();
+
     private:
+        // * Up view
         sf::CircleShape _skin;
         sf::Vector2f _pos;
         sf::Vector2f _direction;
@@ -51,4 +59,11 @@ class Player {
         sf::VertexArray createBeam(float angle) const;
         void sendBeam();
         void checkBeamImpact();
+
+        // * Player Pov
+        std::vector<float> _raysDistance;
+        float _scaleFactor;
+
+        void getRaysDistance();
+
 };

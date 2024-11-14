@@ -5,8 +5,9 @@
 ** Player.cpp
 */
 
-#include "Player.hpp"
 #include <cmath>
+
+#include "Player.hpp"
 #include "Map.hpp"
 
 Player::Player()
@@ -18,7 +19,9 @@ Player::Player()
     _fovVertex(sf::Lines, 4),
     _speed(3.0f),
     _camSpeed(2.0f * (M_PI / 180.0f)),
-    _beamArray()
+    _beamArray(),
+    _raysDistance(),
+    _scaleFactor(1200.0f / (2.0f * tan(_fovAngle / 2.0f)))
 {
     _skin.setOrigin({PLAYER_SIZE, PLAYER_SIZE});
     _skin.setOutlineColor(PLAYER_OUTLINE_COLOR);
@@ -78,6 +81,7 @@ void Player::update()
     _direction = _directionVertex[1].position - _directionVertex[0].position;
     sendBeam();
     checkBeamImpact();
+    getRaysDistance();
 }
 
 void Player::rotate(bool isRight, sf::Vector2f &endPoint) const
@@ -207,4 +211,22 @@ void Player::checkBeamImpact()
         updateBeam(beam, 0, 1);
         updateBeam(beam, 2, 3);
     }
+}
+
+float getDistance(sf::Vector2f begin, sf::Vector2f end)
+{
+    return sqrt(pow(end.x - begin.x, 2) + pow(end.y - begin.y, 2));
+}
+
+void Player::getRaysDistance()
+{
+    _raysDistance.clear();
+    for (auto riter = _beamArray.rbegin(); riter != _beamArray.rend(); ++riter) {
+        _raysDistance.insert(_raysDistance.begin(),
+            getDistance((*riter)[0].position, (*riter)[1].position));
+        _raysDistance.push_back(
+            getDistance((*riter)[2].position, (*riter)[3].position));
+    }
+    for (auto const&dist: _raysDistance)
+        std::cout << dist << std::endl;
 }

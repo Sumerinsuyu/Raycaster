@@ -8,9 +8,11 @@
 #include "Game.hpp"
 
 Game::Game()
-    : _window(sf::VideoMode(SCREEN_WIDTH, SCREEN_HEIGHT), "Doom")
+    : _window(sf::VideoMode(SCREEN_WIDTH, SCREEN_HEIGHT), "Doom"),
+    _playerWindow(sf::VideoMode(SCREEN_WIDTH, SCREEN_HEIGHT), "PlayerPov")
 {
     _window.setFramerateLimit(60);
+    _playerWindow.setFramerateLimit(60);
 }
 
 void Game::setKey()
@@ -44,9 +46,11 @@ void Game::events()
 void Game::display()
 {
     _window.clear();
+    _playerWindow.clear();
     Map::getInstance().render(_window);
     _player.render(_window);
     _window.display();
+    _playerWindow.display();
 }
 
 void Game::update()
