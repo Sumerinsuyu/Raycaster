@@ -9,7 +9,8 @@
 
 Game::Game()
     : _window(sf::VideoMode(SCREEN_WIDTH, SCREEN_HEIGHT), "Doom"),
-    _playerWindow(sf::VideoMode(SCREEN_WIDTH, SCREEN_HEIGHT), "PlayerPov")
+    _playerWindow(sf::VideoMode(SCREEN_WIDTH, SCREEN_HEIGHT), "PlayerPov"),
+    _playerEvent()
 {
     _window.setFramerateLimit(60);
     _playerWindow.setFramerateLimit(60);
@@ -40,6 +41,7 @@ void Game::events()
                 break;
         }
     }
+    while (_playerWindow.pollEvent(_playerEvent));
     setKey();
 }
 

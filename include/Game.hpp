@@ -35,6 +35,7 @@ class Game {
         sf::Clock _clock;
 
         sf::RenderWindow _playerWindow;
+        sf::Event _playerEvent;
 
         Game();
         // ~Game();
