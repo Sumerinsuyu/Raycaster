@@ -20,6 +20,7 @@
 
     #define TOTAL_BEAMS BEAM_NUMBER * 2
     #define STRIPS_WIDTH 1200.0f / TOTAL_BEAMS
+    #define SCALE_CONST 800.0f * 100.0f
 
     enum direction_move {
         UP,
@@ -40,6 +41,7 @@ class Player {
         // *Player Pov
         void PlayerRender();
         void PlayerUpdate();
+        void drawWalls(sf::RenderWindow &window);
 
     private:
         // * Up view
@@ -65,5 +67,4 @@ class Player {
         float _scaleFactor;
 
         void getRaysDistance();
-
 };

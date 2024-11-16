@@ -51,6 +51,7 @@ void Game::display()
     _playerWindow.clear();
     Map::getInstance().render(_window);
     _player.render(_window);
+    _player.drawWalls(_playerWindow);
     _window.display();
     _playerWindow.display();
 }

@@ -227,6 +227,27 @@ void Player::getRaysDistance()
         _raysDistance.push_back(
             getDistance((*riter)[2].position, (*riter)[3].position));
     }
-    for (auto const&dist: _raysDistance)
-        std::cout << dist << std::endl;
+    // for (auto const&dist: _raysDistance)
+    //     std::cout << dist << std::endl;
+}
+
+void Player::drawWalls(sf::RenderWindow &window)
+{
+    sf::RectangleShape wall;
+    float wallHeight;
+    int i = 0;
+
+    wall.setFillColor(sf::Color::Red);
+    wall.setOutlineColor(sf::Color::Black);
+    wall.setOutlineThickness(2.0f);
+    for (auto &distance: _raysDistance) {
+        std::cout << i << std::endl;
+        wallHeight = (SCALE_CONST / distance);
+        std::cout << "Wall height: " << wallHeight << " for distance: " << distance << std::endl;
+        wall.setOrigin({STRIPS_WIDTH / 2, wallHeight / 2});
+        wall.setPosition({i * STRIPS_WIDTH, 400.0f});
+        wall.setSize({STRIPS_WIDTH, wallHeight});
+        window.draw(wall);
+        ++i;
+    }
 }
