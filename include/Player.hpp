@@ -19,7 +19,7 @@
     #define CHECK_LENGTH 1.0f
 
     #define TOTAL_BEAMS BEAM_NUMBER * 2
-    #define STRIPS_WIDTH 1200.0f / TOTAL_BEAMS
+    #define STRIPS_WIDTH 1200.0f / TOTAL_BEAMS / 2
     #define SCALE_CONST 800.0f * 100.0f
 
     enum direction_move {
@@ -41,7 +41,7 @@ class Player {
         // *Player Pov
         void PlayerRender();
         void PlayerUpdate();
-        void drawWalls(sf::RenderWindow &window);
+        void drawWalls(sf::RenderWindow &window) const;
 
     private:
         // * Up view
