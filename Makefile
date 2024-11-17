@@ -23,7 +23,7 @@ SRC = 	main.cpp	\
 
 OBJ = 	$(SRC:.cpp=.o)
 
-NAME = doom
+NAME = raycasting
 
 TOTAL_FILES := $(words $(OBJ))
 COMPILED_FILES = 0

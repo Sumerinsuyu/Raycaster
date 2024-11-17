@@ -35,7 +35,7 @@
 compile_commands.json
 
 #binary
-doom
+raycasting
 
 .vscode
 vgcore*
