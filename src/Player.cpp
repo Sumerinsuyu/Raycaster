@@ -18,10 +18,9 @@ Player::Player()
     _directionVertex(sf::Lines, 2),
     _fovVertex(sf::Lines, 4),
     _speed(3.0f),
-    _camSpeed(2.0f * (M_PI / 180.0f)),
+    _camSpeed(1.2f * (M_PI / 180.0f)),
     _beamArray(),
-    _raysDistance(),
-    _scaleFactor(1200.0f / (2.0f * tan(_fovAngle / 2.0f)))
+    _raysDistance()
 {
     _skin.setOrigin({PLAYER_SIZE, PLAYER_SIZE});
     _skin.setOutlineColor(PLAYER_OUTLINE_COLOR);
@@ -240,10 +239,10 @@ void Player::drawWalls(sf::RenderWindow &window) const
     for (auto &distance: _raysDistance) {
         wallHeight = (SCALE_CONST / distance);
         brightness = (1200.0f - distance) / 1200.0f;
+        color = sf::Color(brightness * 255, 0, 0, 255);
         wall.setOrigin({STRIPS_WIDTH / 2, wallHeight / 2});
         wall.setPosition({i * STRIPS_WIDTH / 2, 400.0f});
         wall.setSize({STRIPS_WIDTH, wallHeight});
-        color = sf::Color(brightness * 255, 0, 0, 255);
         wall.setFillColor(color);
         window.draw(wall);
         ++i;

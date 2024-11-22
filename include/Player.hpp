@@ -64,7 +64,6 @@ class Player {
 
         // * Player Pov
         std::vector<float> _raysDistance;
-        float _scaleFactor;
 
         void getRaysDistance();
 };
