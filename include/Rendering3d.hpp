@@ -25,12 +25,14 @@
 class Rendering3d
 {
     private:
-    protected:
+        void renderWalls(sf::RenderWindow &window,
+            std::vector<float> const &rayDistance) const;
+
     public:
         Rendering3d() = default;
 
-        void renderWalls(sf::RenderWindow &window,
-            std::vector<float> rayDistance) const;
+        void render(sf::RenderWindow &window,
+            std::vector<float> const &rayDistance) const;
 };
 
 #endif
