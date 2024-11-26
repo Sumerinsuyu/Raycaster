@@ -21,6 +21,10 @@
 
     #include <SFML/Graphics.hpp>
 
+    // * WINDOW PARAMETERS
+    #define SCREEN_WIDTH 1200.0f
+    #define SCREEN_HEIGHT 800.0f
+
     // * PLAYER PARAMETERS
     #define PLAYER_SIZE 20
     #define PLAYER_COLOR sf::Color::Red
@@ -31,12 +35,8 @@
     #define CHECK_LENGTH 1.0f
 
     #define TOTAL_BEAMS BEAM_NUMBER * 2
-    #define STRIPS_WIDTH 1200.0f / TOTAL_BEAMS / 2
-    #define SCALE_CONST 800.0f * 100.0f
-
-    // * WINDOW PARAMETERS
-    #define SCREEN_WIDTH 1200
-    #define SCREEN_HEIGHT 800
+    #define STRIPS_WIDTH SCREEN_WIDTH / TOTAL_BEAMS / 2
+    #define SCALE_CONST SCREEN_HEIGHT * 100.0f
 
     // * MAP PARAMETER
     #define MAP_WIDTH 24

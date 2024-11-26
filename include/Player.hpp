@@ -23,12 +23,10 @@ class Player {
         Player();
 
         // * Up view
+        std::vector<float> getRayDistance() const;
         void render(sf::RenderWindow &window) const;
         void move(direction_move direction);
         void update();
-
-        // *Player Pov
-        void drawWalls(sf::RenderWindow &window) const;
 
     private:
         // * Up view
@@ -51,6 +49,5 @@ class Player {
 
         // * Player Pov
         std::vector<float> _raysDistance;
-
-        void getRaysDistance();
+        void computeRaysDistance();
 };

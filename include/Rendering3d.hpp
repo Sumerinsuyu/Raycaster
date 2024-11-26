@@ -29,7 +29,7 @@ class Rendering3d
     public:
         Rendering3d() = default;
 
-        void drawWalls(sf::RenderWindow &window,
+        void renderWalls(sf::RenderWindow &window,
             std::vector<float> rayDistance) const;
 };
 

@@ -37,6 +37,11 @@ Player::Player()
     sendBeam();
 }
 
+std::vector<float> Player::getRayDistance() const
+{
+    return _raysDistance;
+}
+
 void Player::render(sf::RenderWindow &window) const
 {
     window.draw(_skin);
@@ -80,7 +85,7 @@ void Player::update()
     _direction = _directionVertex[1].position - _directionVertex[0].position;
     sendBeam();
     checkBeamImpact();
-    getRaysDistance();
+    computeRaysDistance();
 }
 
 void Player::rotate(bool isRight, sf::Vector2f &endPoint) const
@@ -106,10 +111,10 @@ void Player::movePlayer(bool isUp, sf::Vector2f &basePoint, sf::Vector2f &endPoi
         pow(tip.x - base.x, 2.0f) + pow(tip.y - base.y, 2.0f)
     );
     sf::Vector2f newPoint = base + dir / absDir * tempSpeed;
-    sf::Vector2f newEndPoint = base + dir / absDir * (1200.0f + tempSpeed);
+    sf::Vector2f newEndPoint = base + dir / absDir * (SCREEN_WIDTH + tempSpeed);
 
-    if (Map::getInstance().getMap()[(int)(newPoint.y * (24.0f / 800.0f))]
-        [(int)(newPoint.x * (24.0f / 1200.0f))].type != EMPTY)
+    if (Map::getInstance().getMap()[(int)(newPoint.y * (24.0f / SCREEN_HEIGHT))]
+        [(int)(newPoint.x * (24.0f / SCREEN_WIDTH))].type != EMPTY)
         return;
     basePoint = newPoint;
     endPoint = newEndPoint;
@@ -191,8 +196,8 @@ bool updateBeam(sf::VertexArray &beam, int firstPos, int secondPos)
     for (int i = 0; i < 1200 / CHECK_LENGTH; i++) {
         checkArray[0].position = checkPoint;
         checkPoint = getNewPoint(checkArray);
-        testPoint = {(int)(checkPoint.x * (24.0f / 1200.0f)),
-            (int)(checkPoint.y * (24.0f / 800.0f))};
+        testPoint = {(int)(checkPoint.x * (24.0f / SCREEN_WIDTH)),
+            (int)(checkPoint.y * (24.0f / SCREEN_HEIGHT))};
         if (testPoint.y <= 24 && testPoint.x <= 24 &&
                 map.getMap()[testPoint.y][testPoint.x].type != EMPTY) {
             beam[secondPos].position = checkPoint;
@@ -230,7 +235,7 @@ float getFisheyeCorrectedAngle(sf::Vector2f beamDirection,
     return angle;
 }
 
-void Player::getRaysDistance()
+void Player::computeRaysDistance()
 {
     float angle;
     sf::Vector2f beamDirection;
@@ -249,26 +254,5 @@ void Player::getRaysDistance()
             getDistance((*riter).first[2].position, (*riter).first[3].position)
             * cos(angle)
         );
-    }
-}
-
-void Player::drawWalls(sf::RenderWindow &window) const
-{
-    sf::RectangleShape wall;
-    float wallHeight;
-    int i = 0;
-    float brightness;
-    sf::Color color;
-
-    for (auto &distance: _raysDistance) {
-        wallHeight = (SCALE_CONST / distance);
-        brightness = (1200.0f - distance) / 1200.0f;
-        color = sf::Color(brightness * 255, 0, 0, 255);
-        wall.setOrigin({STRIPS_WIDTH / 2, wallHeight / 2});
-        wall.setPosition({i * STRIPS_WIDTH / 2, 400.0f});
-        wall.setSize({STRIPS_WIDTH, wallHeight});
-        wall.setFillColor(color);
-        window.draw(wall);
-        ++i;
     }
 }

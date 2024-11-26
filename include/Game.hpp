@@ -16,9 +16,10 @@
     #include <SFML/Graphics.hpp>
     #include <math.h>
 
+    #include "GameParameter.hpp"
     #include "Map.hpp"
     #include "Player.hpp"
-    #include "GameParameter.hpp"
+    #include "Rendering3d.hpp"
 
 class Game {
     public:
@@ -27,6 +28,8 @@ class Game {
 
     private:
         Player _player;
+        Rendering3d _rendering3d;
+
         sf::RenderWindow _window;
         sf::Event _event;
         sf::Clock _clock;
