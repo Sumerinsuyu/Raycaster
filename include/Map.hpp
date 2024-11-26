@@ -12,11 +12,7 @@
 
     #include <array>
     #include <SFML/Graphics.hpp>
-
-    // * Map size
-    #define MAP_WIDTH 24
-    #define MAP_HEIGHT 24
-    #define TILE_SIZE 50.0f
+    #include "GameParameter.hpp"
 
     // * Map blocks:
     enum blockType {

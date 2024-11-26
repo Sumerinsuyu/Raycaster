@@ -18,10 +18,7 @@
 
     #include "Map.hpp"
     #include "Player.hpp"
-
-    #define SCREEN_WIDTH 1200
-    #define SCREEN_HEIGHT 800
-
+    #include "GameParameter.hpp"
 
 class Game {
     public:

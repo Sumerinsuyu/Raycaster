@@ -9,18 +9,7 @@
 
     #include <iostream>
     #include <SFML/Graphics.hpp>
-
-    #define PLAYER_SIZE 20
-    #define PLAYER_COLOR sf::Color::Red
-    #define PLAYER_OUTLINE_COLOR sf::Color::White
-    #define DIRECTION_COLOR sf::Color::Green
-
-    #define BEAM_NUMBER 512
-    #define CHECK_LENGTH 1.0f
-
-    #define TOTAL_BEAMS BEAM_NUMBER * 2
-    #define STRIPS_WIDTH 1200.0f / TOTAL_BEAMS / 2
-    #define SCALE_CONST 800.0f * 100.0f
+    #include "GameParameter.hpp"
 
     enum direction_move {
         UP,
@@ -39,8 +28,6 @@ class Player {
         void update();
 
         // *Player Pov
-        void PlayerRender();
-        void PlayerUpdate();
         void drawWalls(sf::RenderWindow &window) const;
 
     private:

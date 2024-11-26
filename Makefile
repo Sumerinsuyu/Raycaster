@@ -19,7 +19,8 @@ COLOUR_END=\033[0m
 SRC = 	main.cpp	\
 		$(SRCDIR)/Game.cpp \
 		$(SRCDIR)/Map.cpp	\
-		$(SRCDIR)/Player.cpp
+		$(SRCDIR)/Player.cpp	\
+		$(SRCDIR)/Rendering3d.cpp	\
 
 OBJ = 	$(SRC:.cpp=.o)
 
