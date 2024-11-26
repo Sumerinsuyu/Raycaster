@@ -50,10 +50,10 @@ class Player {
         sf::Vector2f _direction;
         float _fovAngle;
         sf::VertexArray _directionVertex;
-        sf::VertexArray _fovVertex;
+        std::pair<sf::VertexArray, float> _fovVertex;
         float _speed;
         float _camSpeed;
-        std::vector<sf::VertexArray> _beamArray;
+        std::vector<std::pair<sf::VertexArray, float>> _beamArray;
 
         void rotate(bool isRight, sf::Vector2f &endPoint) const;
         void movePlayer(bool isUp, sf::Vector2f &base, sf::Vector2f &endPoint) const;

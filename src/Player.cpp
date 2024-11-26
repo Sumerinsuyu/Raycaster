@@ -16,7 +16,7 @@ Player::Player()
     _direction{},
     _fovAngle(60.0 * (M_PI / 180.0f)),
     _directionVertex(sf::Lines, 2),
-    _fovVertex(sf::Lines, 4),
+    _fovVertex({sf::VertexArray{sf::Lines, 4}, 0.0f}),
     _speed(3.0f),
     _camSpeed(1.2f * (M_PI / 180.0f)),
     _beamArray(),
@@ -41,8 +41,8 @@ void Player::render(sf::RenderWindow &window) const
 {
     window.draw(_skin);
     window.draw(_directionVertex);
-    window.draw(_fovVertex);
-    for (auto &beam: _beamArray)
+    window.draw(_fovVertex.first);
+    for (auto &[beam, angle]: _beamArray)
         window.draw(beam);
 }
 
@@ -60,13 +60,13 @@ void Player::move(direction_move direction)
             break;
         case LEFT:
             rotate(false, _directionVertex[1].position);
-            rotate(false, _fovVertex[1].position);
-            rotate(false, _fovVertex[3].position);
+            rotate(false, _fovVertex.first[1].position);
+            rotate(false, _fovVertex.first[3].position);
             break;
         case RIGHT:
             rotate(true, _directionVertex[1].position);
-            rotate(true, _fovVertex[1].position);
-            rotate(true, _fovVertex[3].position);
+            rotate(true, _fovVertex.first[1].position);
+            rotate(true, _fovVertex.first[3].position);
             break;
         default:
             break;
@@ -120,17 +120,17 @@ void Player::setPlayerFov()
     float planeLength = tan(_fovAngle / 2.0f);
     sf::Vector2f plane(-_direction.y * planeLength, _direction.x * planeLength);
 
-    _fovVertex[1] = _pos + _direction - plane;
-    _fovVertex[3] = _pos + _direction + plane;
+    _fovVertex.first[1] = _pos + _direction - plane;
+    _fovVertex.first[3] = _pos + _direction + plane;
 
-    _fovVertex[0].position = _pos;
-    _fovVertex[2].position = _pos;
+    _fovVertex.first[0].position = _pos;
+    _fovVertex.first[2].position = _pos;
 
-    _fovVertex[0].color = sf::Color::Red;
-    _fovVertex[1].color = sf::Color::Red;
+    _fovVertex.first[0].color = sf::Color::Red;
+    _fovVertex.first[1].color = sf::Color::Red;
 
-    _fovVertex[2].color = sf::Color::Green;
-    _fovVertex[3].color = sf::Color::Green;
+    _fovVertex.first[2].color = sf::Color::Green;
+    _fovVertex.first[3].color = sf::Color::Green;
 
 }
 
@@ -161,7 +161,8 @@ void Player::sendBeam()
 
     _beamArray.clear();
     for (int i = 0; i < BEAM_NUMBER; i++) {
-        _beamArray.push_back(createBeam(beamAngle));
+        _beamArray.emplace_back(createBeam(beamAngle), beamAngle);
+        _fovVertex.second = beamAngle;
         beamAngle -= (_fovAngle / BEAM_NUMBER);
     }
 }
@@ -204,9 +205,7 @@ bool updateBeam(sf::VertexArray &beam, int firstPos, int secondPos)
 
 void Player::checkBeamImpact()
 {
-    sf::Vector2f pos;
-
-    for (auto &beam: _beamArray) {
+    for (auto &[beam, angle]: _beamArray) {
         updateBeam(beam, 0, 1);
         updateBeam(beam, 2, 3);
     }
@@ -217,14 +216,39 @@ float getDistance(sf::Vector2f begin, sf::Vector2f end)
     return sqrt(pow(end.x - begin.x, 2) + pow(end.y - begin.y, 2));
 }
 
+float getFisheyeCorrectedAngle(sf::Vector2f beamDirection,
+    sf::Vector2f playerDirection)
+{
+    float angle;
+
+    angle = atan2(beamDirection.y, beamDirection.x) -
+        atan2(playerDirection.y, playerDirection.x);
+        if (angle > M_PI)
+            angle -= 2 * M_PI;
+        if (angle < -M_PI)
+            angle += 2 * M_PI;
+    return angle;
+}
+
 void Player::getRaysDistance()
 {
+    float angle;
+    sf::Vector2f beamDirection;
+
     _raysDistance.clear();
     for (auto riter = _beamArray.rbegin(); riter != _beamArray.rend(); ++riter) {
+        beamDirection = {(*riter).first[1].position - (*riter).first[0].position};
+        angle = getFisheyeCorrectedAngle(beamDirection, _direction);
         _raysDistance.insert(_raysDistance.begin(),
-            getDistance((*riter)[0].position, (*riter)[1].position));
+            getDistance((*riter).first[0].position, (*riter).first[1].position)
+            * cos(angle)
+        );
+        beamDirection = {(*riter).first[3].position - (*riter).first[2].position};
+        angle = getFisheyeCorrectedAngle(beamDirection, _direction);
         _raysDistance.push_back(
-            getDistance((*riter)[2].position, (*riter)[3].position));
+            getDistance((*riter).first[2].position, (*riter).first[3].position)
+            * cos(angle)
+        );
     }
 }
 
