@@ -24,6 +24,10 @@ class Player {
 
         // * Up view
         std::vector<float> getRayDistance() const;
+        sf::Vector2f getPlane() const;
+        sf::Vector2f getPosition() const;
+        sf::Vector2f getDirection() const;
+
         void render(sf::RenderWindow &window) const;
         void move(direction_move direction);
         void update();

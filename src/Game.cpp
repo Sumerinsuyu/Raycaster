@@ -51,7 +51,7 @@ void Game::display()
     _playerWindow.clear();
     Map::getInstance().render(_window);
     _player.render(_window);
-    _rendering3d.render(_playerWindow, _player.getRayDistance());
+    _rendering3d.render(_playerWindow, _player.getRayDistance(), _player);
     _window.display();
     _playerWindow.display();
 }

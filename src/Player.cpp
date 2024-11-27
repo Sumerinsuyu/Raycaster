@@ -42,6 +42,25 @@ std::vector<float> Player::getRayDistance() const
     return _raysDistance;
 }
 
+sf::Vector2f Player::getPlane() const
+{
+    float planeLength = tan(_fovAngle / 2.0f);
+    sf::Vector2f plane(-_direction.y * planeLength, _direction.x * planeLength);
+
+    return plane;
+}
+
+sf::Vector2f Player::getPosition() const
+{
+    return _pos;
+}
+
+sf::Vector2f Player::getDirection() const
+{
+    return _direction;
+}
+
+
 void Player::render(sf::RenderWindow &window) const
 {
     window.draw(_skin);
@@ -136,7 +155,6 @@ void Player::setPlayerFov()
 
     _fovVertex.first[2].color = sf::Color::Green;
     _fovVertex.first[3].color = sf::Color::Green;
-
 }
 
 sf::VertexArray Player::createBeam(float angle) const

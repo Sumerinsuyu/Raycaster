@@ -21,18 +21,22 @@
     #include <iostream>
     #include <SFML/Graphics.hpp>
     #include "GameParameter.hpp"
+    #include "Player.hpp"
 
 class Rendering3d
 {
     private:
         void renderWalls(sf::RenderWindow &window,
             std::vector<float> const &rayDistance) const;
+        void renderFloor(sf::RenderWindow &window, sf::Vector2f plane,
+            sf::Vector2f direction, sf::Vector2f playerPos) const;
+        void renderSky(sf::RenderWindow &window) const;
 
     public:
         Rendering3d() = default;
 
         void render(sf::RenderWindow &window,
-            std::vector<float> const &rayDistance) const;
+            std::vector<float> const &rayDistance, Player &player) const;
 };
 
 #endif

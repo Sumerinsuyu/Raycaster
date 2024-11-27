@@ -43,6 +43,13 @@
     #define MAP_HEIGHT 24
     #define TILE_SIZE 50.0f
 
+    // * 3D RENDERING
+    #define POS_Z SCREEN_HEIGHT * 0.5f
+
+    // * TEXTURE SIZE
+    #define FLOOR_WIDTH 512
+    #define FLOOR_HEIGHT 512
+
 #endif
 
 /* ------------------------------------------------------------------------------------ *
