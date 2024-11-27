@@ -29,14 +29,17 @@ class Rendering3d
         void renderWalls(sf::RenderWindow &window,
             std::vector<float> const &rayDistance) const;
         void renderFloor(sf::RenderWindow &window, sf::Vector2f plane,
-            sf::Vector2f direction, sf::Vector2f playerPos) const;
+            sf::Vector2f direction, sf::Vector2f playerPos);
         void renderSky(sf::RenderWindow &window) const;
+        sf::Texture _floorTexture;
+        sf::Image _floorImage;
+        sf::RectangleShape _floorRect;
 
     public:
-        Rendering3d() = default;
+        Rendering3d();
 
         void render(sf::RenderWindow &window,
-            std::vector<float> const &rayDistance, Player &player) const;
+            std::vector<float> const &rayDistance, Player &player);
 };
 
 #endif

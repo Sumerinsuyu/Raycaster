@@ -8,7 +8,9 @@
 #include "Game.hpp"
 
 Game::Game()
-    : _window(sf::VideoMode(SCREEN_WIDTH, SCREEN_HEIGHT), "Doom"),
+    : _player(),
+    _rendering3d(),
+    _window(sf::VideoMode(SCREEN_WIDTH, SCREEN_HEIGHT), "Doom"),
     _playerWindow(sf::VideoMode(SCREEN_WIDTH, SCREEN_HEIGHT), "PlayerPov"),
     _playerEvent()
 {

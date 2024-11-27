@@ -18,6 +18,15 @@
  * ------------------------------------------------------------------------------------ */
 
 #include "Rendering3d.hpp"
+#include <cmath>
+
+Rendering3d::Rendering3d()
+: _floorTexture(),
+_floorRect({1, 1})
+{
+    _floorTexture.loadFromFile("./asset/floor.png");
+    _floorImage = _floorTexture.copyToImage();
+}
 
 void Rendering3d::renderWalls(sf::RenderWindow &window,
     std::vector<float> const &rayDistance) const
@@ -41,31 +50,42 @@ void Rendering3d::renderWalls(sf::RenderWindow &window,
     }
 }
 
-void Rendering3d::renderFloor(sf::RenderWindow &window, sf::Vector2f plane,
-    sf::Vector2f direction, sf::Vector2f playerPos) const
+static sf::Vector2f normalize(sf::Vector2f direction)
 {
-    float rayDirX0;
-    float rayDirY0;
-    float rayDirX1;
-    float rayDirY1;
-    float horizonPos;
-    float rowDistance;
-    float floorStepX;
-    float floorStepY;
-    float posX = (int)(playerPos.x * (24.0f / SCREEN_WIDTH));
-    float posY = (int)(playerPos.x * (24.0f / SCREEN_HEIGHT));
-    float floorX;
-    float floorY;
+    float magnitude = std::sqrt(direction.x * direction.x + direction.y * direction.y);
 
-    sf::Texture floorText;
-    floorText.loadFromFile("./asset/floor.png");
-    sf::Image floorImage = floorText.copyToImage();
+    if (magnitude != 0)
+        return sf::Vector2f(direction.x / magnitude, direction.y / magnitude);
+    else
+        return sf::Vector2f(0, 0);
+}
 
-    for (int y = 0; y < SCREEN_HEIGHT / 2; y++) {
+
+void Rendering3d::renderFloor(sf::RenderWindow &window, sf::Vector2f plane,
+    sf::Vector2f direction, sf::Vector2f playerPos)
+{
+    float rayDirX0{};
+    float rayDirY0{};
+    float rayDirX1{};
+    float rayDirY1{};
+    float horizonPos{};
+    float rowDistance{};
+    float floorStepX{};
+    float floorStepY{};
+    float posX = (playerPos.x * (24.0f / SCREEN_WIDTH));
+    float posY = (playerPos.y * (24.0f / SCREEN_HEIGHT));
+    float floorX{};
+    float floorY{};
+
+    direction = normalize(direction);
+
+    for (int y = SCREEN_HEIGHT / 2 + 1; y < SCREEN_HEIGHT; y++) {
         rayDirX0 = direction.x - plane.x;
         rayDirY0 = direction.y - plane.y;
         rayDirX1 = direction.x + plane.x;
         rayDirY1 = direction.y + plane.y;
+
+        std::cout << direction.x << " " << direction.y << std::endl;
 
         horizonPos = y - SCREEN_HEIGHT / 2;
 
@@ -78,8 +98,8 @@ void Rendering3d::renderFloor(sf::RenderWindow &window, sf::Vector2f plane,
         floorY = posY + rowDistance * rayDirY0;
 
         for (int x = 0; x < SCREEN_WIDTH; x++) {
-            auto cellX = (int)(floorX);
-            auto cellY = (int)(floorY);
+            int cellX = floorX;
+            int cellY = floorY;
 
             int tx = (int)(FLOOR_WIDTH * (floorX - cellX)) & (FLOOR_WIDTH - 1);
             int ty = (int)(FLOOR_HEIGHT * (floorY - cellY)) & (FLOOR_HEIGHT - 1);
@@ -87,12 +107,11 @@ void Rendering3d::renderFloor(sf::RenderWindow &window, sf::Vector2f plane,
             floorX += floorStepX;
             floorY += floorStepY;
 
-            sf::Color color = floorImage.getPixel(tx, ty);
+            sf::Color color = _floorImage.getPixel(tx, ty);
 
-            sf::RectangleShape pixel({1, 1});
-            pixel.setFillColor(color);
-            pixel.setPosition({(float)x, (float)y + (SCREEN_HEIGHT / 2)});
-            window.draw(pixel);
+            _floorRect.setFillColor(color);
+            _floorRect.setPosition({(float)x, (float)y});
+            window.draw(_floorRect);
         }
     }
 }
@@ -106,7 +125,7 @@ void Rendering3d::renderSky(sf::RenderWindow &window) const
 }
 
 void Rendering3d::render(sf::RenderWindow &window,
-    const std::vector<float> &rayDistance, Player &player) const
+    const std::vector<float> &rayDistance, Player &player)
 {
     renderSky(window);
     renderFloor(window, player.getPlane(), player.getDirection(),

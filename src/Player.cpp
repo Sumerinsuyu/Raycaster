@@ -42,10 +42,21 @@ std::vector<float> Player::getRayDistance() const
     return _raysDistance;
 }
 
+static sf::Vector2f normalize(sf::Vector2f direction)
+{
+    float magnitude = std::sqrt(direction.x * direction.x + direction.y * direction.y);
+
+    if (magnitude != 0)
+        return sf::Vector2f(direction.x / magnitude, direction.y / magnitude);
+    else
+        return sf::Vector2f(0, 0);
+}
+
 sf::Vector2f Player::getPlane() const
 {
+    sf::Vector2f dir = normalize(_direction);
     float planeLength = tan(_fovAngle / 2.0f);
-    sf::Vector2f plane(-_direction.y * planeLength, _direction.x * planeLength);
+    sf::Vector2f plane(-dir.y * planeLength, dir.x * planeLength);
 
     return plane;
 }
