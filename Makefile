@@ -16,13 +16,14 @@ COLOUR_RED=\033[0;31m
 COLOUR_BLUE=\033[0;34m
 COLOUR_END=\033[0m
 
-SRC = 	main.cpp	\
+SRC = 	$(SRCDIR)/main.cpp	\
 		$(SRCDIR)/Game.cpp \
 		$(SRCDIR)/Map.cpp	\
 		$(SRCDIR)/Player.cpp	\
 		$(SRCDIR)/Rendering3d.cpp	\
 
-OBJ = 	$(SRC:.cpp=.o)
+OBJ	=	$(patsubst src/%.cpp,build/%.o,$(SRC))
+DIRS =	$(sort $(dir $(OBJ)))
 
 NAME = raycasting
 
@@ -35,19 +36,22 @@ define show_progress
 	echo -e "$(COLOUR_BLUE)[$$PERCENT%] \t\t $(COLOUR_GREEN)Compiling $<$(COLOUR_END)"
 endef
 
-all:    $(NAME)
+all:	build $(NAME)
+
+build:
+	@mkdir -p $(DIRS)
 
 $(NAME): $(OBJ)
 	@echo -e "$(COLOUR_GREEN)Building...$(COLOUR_END)"
 	@$(CC) $(CFLAGS) $(LIBS) $(OBJ) -o $(NAME)
 	@echo -e "$(COLOUR_GREEN)Build complete: $(NAME)$(COLOUR_END)"
 
-%.o: %.cpp
+build/%.o: src/%.cpp
 	$(call show_progress)
 	@$(CC) $(CFLAGS) -c -o $@ $< || (echo -e "$(COLOUR_RED)Compilation error on $<$(COLOUR_END)"; exit 1)
 
 clean:
-	@rm -rf $(OBJ)
+	@rm -rf build
 	@echo -e "$(COLOUR_RED)Removing\t[$(OBJ)]$(COLOUR_END)"
 
 fclean: clean

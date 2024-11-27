@@ -125,7 +125,7 @@ void Rendering3d::renderSky(sf::RenderWindow &window) const
 }
 
 void Rendering3d::render(sf::RenderWindow &window,
-    const std::vector<float> &rayDistance, Player &player)
+    const std::vector<float> &rayDistance, const Player &player)
 {
     renderSky(window);
     renderFloor(window, player.getPlane(), player.getDirection(),

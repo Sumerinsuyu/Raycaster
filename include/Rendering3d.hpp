@@ -39,7 +39,7 @@ class Rendering3d
         Rendering3d();
 
         void render(sf::RenderWindow &window,
-            std::vector<float> const &rayDistance, Player &player);
+            std::vector<float> const &rayDistance, const Player &player);
 };
 
 #endif
