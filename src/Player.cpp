@@ -143,8 +143,8 @@ void Player::movePlayer(bool isUp, sf::Vector2f &basePoint, sf::Vector2f &endPoi
     sf::Vector2f newPoint = base + dir / absDir * tempSpeed;
     sf::Vector2f newEndPoint = base + dir / absDir * (SCREEN_WIDTH + tempSpeed);
 
-    if (Map::getInstance().getMap()[(int)(newPoint.y * (24.0f / SCREEN_HEIGHT))]
-        [(int)(newPoint.x * (24.0f / SCREEN_WIDTH))].type != EMPTY)
+    if (Map::getInstance().getMap()[(int)(newPoint.y * ((float)MAP_WIDTH / SCREEN_HEIGHT))]
+        [(int)(newPoint.x * ((float)MAP_WIDTH / SCREEN_WIDTH))].type != EMPTY)
         return;
     basePoint = newPoint;
     endPoint = newEndPoint;
@@ -222,11 +222,11 @@ bool updateBeam(sf::VertexArray &beam, int firstPos, int secondPos)
     auto &map = Map::getInstance();
 
     checkArray[1].position = beam[secondPos].position;
-    for (int i = 0; i < 1200 / CHECK_LENGTH; i++) {
+    for (int i = 0; i < (int)SCREEN_WIDTH / CHECK_LENGTH; i++) {
         checkArray[0].position = checkPoint;
         checkPoint = getNewPoint(checkArray);
-        testPoint = {(int)(checkPoint.x * (24.0f / SCREEN_WIDTH)),
-            (int)(checkPoint.y * (24.0f / SCREEN_HEIGHT))};
+        testPoint = {(int)(checkPoint.x * ((float)MAP_WIDTH / SCREEN_WIDTH)),
+            (int)(checkPoint.y * ((float)MAP_WIDTH / SCREEN_HEIGHT))};
         if (testPoint.y <= 24 && testPoint.x <= 24 &&
                 map.getMap()[testPoint.y][testPoint.x].type != EMPTY) {
             beam[secondPos].position = checkPoint;

@@ -61,8 +61,8 @@ void Rendering3d::renderFloor(sf::RenderWindow &window, sf::Vector2f plane,
     float rowDistance{};
     float floorStepX{};
     float floorStepY{};
-    float posX = (playerPos.x * (24.0f / SCREEN_WIDTH));
-    float posY = (playerPos.y * (24.0f / SCREEN_HEIGHT));
+    float posX = (playerPos.x * ((float)MAP_WIDTH / SCREEN_WIDTH));
+    float posY = (playerPos.y * ((float)MAP_HEIGHT / SCREEN_HEIGHT));
     float floorX{};
     float floorY{};
 
@@ -74,9 +74,9 @@ void Rendering3d::renderFloor(sf::RenderWindow &window, sf::Vector2f plane,
         rayDirX1 = direction.x + plane.x;
         rayDirY1 = direction.y + plane.y;
 
-        horizonPos = y - SCREEN_HEIGHT / 2;
+        horizonPos = (float)y - SCREEN_HEIGHT / 2.0f;
 
-        rowDistance = POS_Z / horizonPos;
+        rowDistance = POS_Z / horizonPos * 2.0f;
 
         floorStepX = rowDistance * (rayDirX1 - rayDirX0) / SCREEN_WIDTH;
         floorStepY = rowDistance * (rayDirY1 - rayDirY0) / SCREEN_WIDTH;
@@ -101,7 +101,7 @@ void Rendering3d::renderFloor(sf::RenderWindow &window, sf::Vector2f plane,
     }
     _renderedFloorTexture.loadFromImage(_renderedImage);
     _renderedFloorSprite.setTexture(_renderedFloorTexture);
-    _renderedFloorSprite.setPosition({0.0f, 400.0f});
+    _renderedFloorSprite.setPosition({0.0f, SCREEN_HEIGHT / 2});
     window.draw(_renderedFloorSprite);
 }
 
