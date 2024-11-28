@@ -31,9 +31,15 @@ class Rendering3d
         void renderFloor(sf::RenderWindow &window, sf::Vector2f plane,
             sf::Vector2f direction, sf::Vector2f playerPos);
         void renderSky(sf::RenderWindow &window) const;
+
+        // * FLOOR RENDERIGN
         sf::Texture _floorTexture;
         sf::Image _floorImage;
-        sf::RectangleShape _floorRect;
+
+        sf::Image _renderedImage;
+        sf::Texture _renderedFloorTexture;
+        sf::Sprite _renderedFloorSprite;
+
 
     public:
         Rendering3d();

@@ -68,7 +68,7 @@ sf::Vector2f Player::getPosition() const
 
 sf::Vector2f Player::getDirection() const
 {
-    return _direction;
+    return normalize(_direction);
 }
 
 

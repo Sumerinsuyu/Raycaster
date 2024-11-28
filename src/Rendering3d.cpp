@@ -21,11 +21,11 @@
 #include <cmath>
 
 Rendering3d::Rendering3d()
-: _floorTexture(),
-_floorRect({1, 1})
+: _floorTexture()
 {
     _floorTexture.loadFromFile("./asset/floor.png");
     _floorImage = _floorTexture.copyToImage();
+    _renderedImage.create(SCREEN_WIDTH, (SCREEN_HEIGHT / 2.0f));
 }
 
 void Rendering3d::renderWalls(sf::RenderWindow &window,
@@ -50,17 +50,6 @@ void Rendering3d::renderWalls(sf::RenderWindow &window,
     }
 }
 
-static sf::Vector2f normalize(sf::Vector2f direction)
-{
-    float magnitude = std::sqrt(direction.x * direction.x + direction.y * direction.y);
-
-    if (magnitude != 0)
-        return sf::Vector2f(direction.x / magnitude, direction.y / magnitude);
-    else
-        return sf::Vector2f(0, 0);
-}
-
-
 void Rendering3d::renderFloor(sf::RenderWindow &window, sf::Vector2f plane,
     sf::Vector2f direction, sf::Vector2f playerPos)
 {
@@ -77,15 +66,13 @@ void Rendering3d::renderFloor(sf::RenderWindow &window, sf::Vector2f plane,
     float floorX{};
     float floorY{};
 
-    direction = normalize(direction);
+    _renderedImage.create(SCREEN_WIDTH, (SCREEN_HEIGHT / 2.0f));
 
     for (int y = SCREEN_HEIGHT / 2 + 1; y < SCREEN_HEIGHT; y++) {
         rayDirX0 = direction.x - plane.x;
         rayDirY0 = direction.y - plane.y;
         rayDirX1 = direction.x + plane.x;
         rayDirY1 = direction.y + plane.y;
-
-        std::cout << direction.x << " " << direction.y << std::endl;
 
         horizonPos = y - SCREEN_HEIGHT / 2;
 
@@ -109,11 +96,13 @@ void Rendering3d::renderFloor(sf::RenderWindow &window, sf::Vector2f plane,
 
             sf::Color color = _floorImage.getPixel(tx, ty);
 
-            _floorRect.setFillColor(color);
-            _floorRect.setPosition({(float)x, (float)y});
-            window.draw(_floorRect);
+            _renderedImage.setPixel(x, (y - (int)(SCREEN_HEIGHT / 2.0f)), color);
         }
     }
+    _renderedFloorTexture.loadFromImage(_renderedImage);
+    _renderedFloorSprite.setTexture(_renderedFloorTexture);
+    _renderedFloorSprite.setPosition({0.0f, 400.0f});
+    window.draw(_renderedFloorSprite);
 }
 
 void Rendering3d::renderSky(sf::RenderWindow &window) const
