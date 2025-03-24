@@ -10,7 +10,7 @@
 Game::Game()
     : _player(),
     _rendering3d(),
-    _window(sf::VideoMode(SCREEN_WIDTH, SCREEN_HEIGHT), "Doom"),
+    _window(sf::VideoMode(SCREEN_WIDTH, SCREEN_HEIGHT), "Raycasting"),
     _playerWindow(sf::VideoMode(SCREEN_WIDTH, SCREEN_HEIGHT), "PlayerPov"),
     _playerEvent()
 {
@@ -36,6 +36,7 @@ void Game::events()
         switch (_event.type) {
             case sf::Event::Closed:
                 _window.close();
+                _playerWindow.close();
                 break;
             case sf::Event::KeyPressed:
                 break;
@@ -43,7 +44,12 @@ void Game::events()
                 break;
         }
     }
-    while (_playerWindow.pollEvent(_playerEvent));
+    while (_playerWindow.pollEvent(_playerEvent)) {
+        if (_playerEvent.type == sf::Event::Closed) {
+            _window.close();
+            _playerWindow.close();
+        }
+    }
     setKey();
 }
 
